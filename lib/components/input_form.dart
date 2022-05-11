@@ -20,6 +20,7 @@ class InputForm<T> extends StatefulWidget {
     this.borderColor = AppColors.hover,
     this.radius = 5.0,
     this.borderWidth = 1.0,
+    this.textAlign = TextAlign.start,
   }) : super(key: key);
 
   final TextInputType keyboardType;
@@ -37,6 +38,7 @@ class InputForm<T> extends StatefulWidget {
   final Color borderColor;
   final double radius;
   final double borderWidth;
+  final TextAlign textAlign;
 
   final String? Function(String?)? validator;
 
@@ -53,12 +55,13 @@ class _InputFormState extends State<InputForm> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: widget.backgroundColor,
-          borderRadius: BorderRadius.circular(widget.radius),
-          border: Border.all(
-            color: widget.borderColor,
-            width: widget.borderWidth,
-          )),
+        color: widget.backgroundColor,
+        borderRadius: BorderRadius.circular(widget.radius),
+        border: Border.all(
+          color: widget.borderColor,
+          width: widget.borderWidth,
+        ),
+      ),
       child: Padding(
         padding: widget.padding,
         child: TextFormField(
@@ -73,6 +76,7 @@ class _InputFormState extends State<InputForm> {
             fontWeight: widget.fontWeight,
             color: widget.textColor,
           ),
+          textAlign: widget.textAlign,
           decoration: InputDecoration(
             border: InputBorder.none,
             hintText: widget.hintText,

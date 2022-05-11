@@ -66,187 +66,211 @@ class _SignUpScreenState extends State<SignUpScreen> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: Background(
-        child: SingleChildScrollView(
-          child: Center(
-            child: SizedBox(
-              height: size.height - 10,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    const Text(
-                      "Register",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 38,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-
-                    InputForm(
-                      controller: usernameController,
-                      hintText: "Username",
-                      backgroundColor: Colors.transparent,
-                      borderWidth: 2,
-                      borderColor: Colors.white,
-                      textColor: Colors.white,
-                      hintTextColor: Colors.white,
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    InputForm(
-                      keyboardType: TextInputType.emailAddress,
-                      controller: emailController,
-                      hintText: "Email",
-                      backgroundColor: Colors.transparent,
-                      borderWidth: 2,
-                      borderColor: Colors.white,
-                      textColor: Colors.white,
-                      hintTextColor: Colors.white,
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    InputForm(
-                      obscureText: true,
-                      enableSuggestions: false,
-                      autocorrect: false,
-                      controller: passwordController,
-                      hintText: "Password",
-                      backgroundColor: Colors.transparent,
-                      borderWidth: 2,
-                      borderColor: Colors.white,
-                      textColor: Colors.white,
-                      hintTextColor: Colors.white,
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    TextButton(
-                      style: AppStyles.flatButtonStyle(),
-                      onPressed: _submit,
-                      child: const Text(
-                        "REGISTER",
-                        style: TextStyle(fontSize: 20),
-                      ),
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    AlreadyHaveAnAccountCheck(
-                      login: false,
-                      press: () {
-                        Navigator.pushReplacementNamed(context, "login");
-                      },
-                    ),
-
-                    const SizedBox(height: 30),
-                    const Center(
-                      child: Text(
-                        "OR",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18,
-                          color: Colors.white,
+      body: Stack(
+        children: [
+          Background(
+            child: SingleChildScrollView(
+              child: Center(
+                child: SizedBox(
+                  height: size.height - 10,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20, right: 20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        const Text(
+                          "Register",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 38,
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    TextButton(
-                      style: AppStyles.flatButtonStyle(
-                        padding: const EdgeInsets.only(top: 13, bottom: 13),
-                        backgroundColor: AppColors.secondary,
-                      ),
-                      onPressed: () {},
-                      child: const Text(
-                        "Use Your Email",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    TextButton.icon(
-                      icon: const Icon(
-                        Icons.facebook,
-                        color: Colors.white,
-                        size: 18,
-                      ),
-                      style: AppStyles.flatButtonStyle(
-                        padding: const EdgeInsets.only(top: 13, bottom: 13),
-                        backgroundColor: const Color(0XFF1878F3),
-                      ),
-                      onPressed: _facebookTapped,
-                      label: const Text(
-                        "Login with Facebook",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    TextButton.icon(
-                      icon: SvgPicture.asset(
-                        "assets/icons/google-plus.svg",
-                        color: Colors.red,
-                        height: 18,
-                        width: 18,
-                      ),
-                      style: AppStyles.flatButtonStyle(
-                        padding: const EdgeInsets.only(top: 13, bottom: 13),
-                        backgroundColor: AppColors.white,
-                      ),
-                      onPressed: _googleTapped,
-                      label: const Text(
-                        "Login with Google",
-                        style: TextStyle(fontSize: 16, color: Colors.black),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    TextButton.icon(
-                      icon: SvgPicture.asset(
-                        "assets/icons/icons8_apple_logo.svg",
-                        color: Colors.white,
-                        height: 18,
-                        width: 18,
-                      ),
-                      style: AppStyles.flatButtonStyle(
-                        padding: const EdgeInsets.only(top: 13, bottom: 13),
-                        backgroundColor: AppColors.black,
-                      ),
-                      onPressed: _appleTapped,
-                      label: const Text(
-                        "Login with Apple",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
+                        const SizedBox(height: 10),
 
-                    // const OrDivider(),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.center,
-                    //   children: <Widget>[
-                    //     SocalIcon(
-                    //       iconSrc: "assets/icons/facebook.svg",
-                    //       press: () {},
-                    //     ),
-                    //     SocalIcon(
-                    //       iconSrc: "assets/icons/twitter.svg",
-                    //       press: () {},
-                    //     ),
-                    //     SocalIcon(
-                    //       iconSrc: "assets/icons/google-plus.svg",
-                    //       press: () {},
-                    //     ),
-                    //   ],
-                    // )
-                  ],
+                        InputForm(
+                          controller: usernameController,
+                          hintText: "Username",
+                          backgroundColor: Colors.transparent,
+                          borderWidth: 2,
+                          borderColor: Colors.white,
+                          textColor: Colors.white,
+                          hintTextColor: Colors.white,
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        InputForm(
+                          keyboardType: TextInputType.emailAddress,
+                          controller: emailController,
+                          hintText: "Email",
+                          backgroundColor: Colors.transparent,
+                          borderWidth: 2,
+                          borderColor: Colors.white,
+                          textColor: Colors.white,
+                          hintTextColor: Colors.white,
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        InputForm(
+                          obscureText: true,
+                          enableSuggestions: false,
+                          autocorrect: false,
+                          controller: passwordController,
+                          hintText: "Password",
+                          backgroundColor: Colors.transparent,
+                          borderWidth: 2,
+                          borderColor: Colors.white,
+                          textColor: Colors.white,
+                          hintTextColor: Colors.white,
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        TextButton(
+                          style: AppStyles.flatButtonStyle(),
+                          onPressed: _submit,
+                          child: const Text(
+                            "REGISTER",
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        AlreadyHaveAnAccountCheck(
+                          login: false,
+                          press: () {
+                            Navigator.pushReplacementNamed(context, "login");
+                          },
+                        ),
+
+                        const SizedBox(height: 30),
+                        const Center(
+                          child: Text(
+                            "OR",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        TextButton(
+                          style: AppStyles.flatButtonStyle(
+                            padding: const EdgeInsets.only(top: 13, bottom: 13),
+                            backgroundColor: AppColors.secondary,
+                          ),
+                          onPressed: () {},
+                          child: const Text(
+                            "Use Username/Email",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        TextButton.icon(
+                          icon: const Icon(
+                            Icons.facebook,
+                            color: Colors.white,
+                            size: 18,
+                          ),
+                          style: AppStyles.flatButtonStyle(
+                            padding: const EdgeInsets.only(top: 13, bottom: 13),
+                            backgroundColor: const Color(0XFF1878F3),
+                          ),
+                          onPressed: _facebookTapped,
+                          label: const Text(
+                            "Login with Facebook",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        TextButton.icon(
+                          icon: SvgPicture.asset(
+                            "assets/icons/google-plus.svg",
+                            color: Colors.red,
+                            height: 18,
+                            width: 18,
+                          ),
+                          style: AppStyles.flatButtonStyle(
+                            padding: const EdgeInsets.only(top: 13, bottom: 13),
+                            backgroundColor: AppColors.white,
+                          ),
+                          onPressed: _googleTapped,
+                          label: const Text(
+                            "Login with Google",
+                            style: TextStyle(fontSize: 16, color: Colors.black),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        TextButton.icon(
+                          icon: SvgPicture.asset(
+                            "assets/icons/icons8_apple_logo.svg",
+                            color: Colors.white,
+                            height: 18,
+                            width: 18,
+                          ),
+                          style: AppStyles.flatButtonStyle(
+                            padding: const EdgeInsets.only(top: 13, bottom: 13),
+                            backgroundColor: AppColors.black,
+                          ),
+                          onPressed: _appleTapped,
+                          label: const Text(
+                            "Login with Apple",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+
+                        // const OrDivider(),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.center,
+                        //   children: <Widget>[
+                        //     SocalIcon(
+                        //       iconSrc: "assets/icons/facebook.svg",
+                        //       press: () {},
+                        //     ),
+                        //     SocalIcon(
+                        //       iconSrc: "assets/icons/twitter.svg",
+                        //       press: () {},
+                        //     ),
+                        //     SocalIcon(
+                        //       iconSrc: "assets/icons/google-plus.svg",
+                        //       press: () {},
+                        //     ),
+                        //   ],
+                        // )
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),
           ),
-        ),
+
+          //skip
+          Positioned(
+            right: 14,
+            top: 50,
+            child: TextButton.icon(
+              icon: const Icon(Icons.arrow_right, color: Colors.white),
+              label: const Text(
+                "SKIP",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 18,
+                ),
+              ),
+              onPressed: () {
+                Navigator.pop(context, "skip");
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

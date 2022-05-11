@@ -19,7 +19,11 @@ class Site {
   static String PRODUCT_VARIATION =
       ADDRESS + "wp-json/skye-api/v1/product-variation/";
   static String LOGIN = ADDRESS + "wp-json/skye-api/v1/authenticate";
+  static String AUTHENTICATE_USERNAME =
+      ADDRESS + "wp-json/skye-api/v1/authenticate-username";
   static String REGISTER = ADDRESS + "wp-json/skye-api/v1/register/";
+  static String REGISTER_USERNAME =
+      ADDRESS + "wp-json/skye-api/v1/register-username/";
   static String USER = ADDRESS + "wp-json/skye-api/v1/user-info/";
   static String UPDATE_USER = ADDRESS + "wp-json/skye-api/v1/update-user-info/";
   static String UPDATE_SHIPPING =

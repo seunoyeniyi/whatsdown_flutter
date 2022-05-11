@@ -84,8 +84,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   style: AppStyles.flatButtonStyle(),
                   onPressed: () {
                     Navigator.pushNamed(context, "register").then((value) {
-                      checkLogin();
-                      setState(() {});
+                      if (value.toString() == "skip") {
+                        Navigator.pop(context);
+                      } else {
+                        checkLogin();
+                        setState(() {});
+                      }
                     });
                   },
                   child: const Text(
@@ -100,8 +104,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   ),
                   onPressed: () {
                     Navigator.pushNamed(context, "login").then((value) {
-                      checkLogin();
-                      setState(() {});
+                      if (value.toString() == "skip") {
+                        Navigator.pop(context);
+                      } else {
+                        checkLogin();
+                        setState(() {});
+                      }
                     });
                   },
                   child: const Text(
