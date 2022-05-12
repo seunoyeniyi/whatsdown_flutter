@@ -10,6 +10,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:http/http.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:skyewooapp/app_colors.dart';
 import 'package:skyewooapp/components/input_form.dart';
@@ -20,6 +21,7 @@ import 'package:skyewooapp/handlers/user_session.dart';
 import 'package:skyewooapp/screens/login/background.dart';
 import 'package:skyewooapp/site.dart';
 import 'package:skyewooapp/ui/username_dialog.dart';
+import 'package:skyewooapp/ui/validate_phone_dialog.dart';
 // import 'package:skyewooapp/screens/signup/components/social_icon.dart';
 
 import '../../../components/already_have_an_account_acheck.dart';
@@ -36,11 +38,15 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  final phoneController = TextEditingController();
   final usernameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
   UserSession userSession = UserSession();
+
+  bool useEmail = false;
+  String phoneNumber = "";
 
   @override
   void initState() {
@@ -88,43 +94,97 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                         ),
                         const SizedBox(height: 10),
-
-                        InputForm(
-                          controller: usernameController,
-                          hintText: "Username",
-                          backgroundColor: Colors.transparent,
-                          borderWidth: 2,
-                          borderColor: Colors.white,
-                          textColor: Colors.white,
-                          hintTextColor: Colors.white,
+                        //using username, email and password
+                        Visibility(
+                          visible: useEmail,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              InputForm(
+                                controller: usernameController,
+                                hintText: "Username",
+                                backgroundColor: Colors.transparent,
+                                borderWidth: 2,
+                                borderColor: Colors.white,
+                                textColor: Colors.white,
+                                hintTextColor: Colors.white,
+                              ),
+                              const SizedBox(height: 20),
+                              InputForm(
+                                keyboardType: TextInputType.emailAddress,
+                                controller: emailController,
+                                hintText: "Email",
+                                backgroundColor: Colors.transparent,
+                                borderWidth: 2,
+                                borderColor: Colors.white,
+                                textColor: Colors.white,
+                                hintTextColor: Colors.white,
+                              ),
+                              const SizedBox(height: 20),
+                              InputForm(
+                                obscureText: true,
+                                enableSuggestions: false,
+                                autocorrect: false,
+                                controller: passwordController,
+                                hintText: "Password",
+                                backgroundColor: Colors.transparent,
+                                borderWidth: 2,
+                                borderColor: Colors.white,
+                                textColor: Colors.white,
+                                hintTextColor: Colors.white,
+                              ),
+                            ],
+                          ),
                         ),
+                        //use phone
+                        Visibility(
+                          visible: !useEmail,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(
+                                color: Colors.white,
+                                width: 2,
+                              ),
+                            ),
+                            child: IntlPhoneField(
+                              controller: phoneController,
+                              dropdownIcon: const Icon(
+                                Icons.arrow_drop_down,
+                                color: Colors.white,
+                              ),
+                              disableLengthCheck: true,
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                              dropdownTextStyle: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintStyle: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.normal),
+                                labelStyle: TextStyle(color: Colors.white),
+                                hintText: 'Phone Number',
+                              ),
+                              initialCountryCode: 'IN',
+                              onChanged: (phone) {
+                                String code =
+                                    phone.countryCode.replaceFirst("+", "");
+                                String number = phone.number;
 
-                        const SizedBox(height: 20),
+                                if (number.startsWith("0")) {
+                                  number = number.replaceFirst("0", "");
+                                }
 
-                        InputForm(
-                          keyboardType: TextInputType.emailAddress,
-                          controller: emailController,
-                          hintText: "Email",
-                          backgroundColor: Colors.transparent,
-                          borderWidth: 2,
-                          borderColor: Colors.white,
-                          textColor: Colors.white,
-                          hintTextColor: Colors.white,
-                        ),
-
-                        const SizedBox(height: 20),
-
-                        InputForm(
-                          obscureText: true,
-                          enableSuggestions: false,
-                          autocorrect: false,
-                          controller: passwordController,
-                          hintText: "Password",
-                          backgroundColor: Colors.transparent,
-                          borderWidth: 2,
-                          borderColor: Colors.white,
-                          textColor: Colors.white,
-                          hintTextColor: Colors.white,
+                                //phone number to ue for signing
+                                phoneNumber = code + number;
+                              },
+                            ),
+                          ),
                         ),
 
                         const SizedBox(height: 20),
@@ -148,79 +208,97 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
 
                         const SizedBox(height: 30),
-                        const Center(
-                          child: Text(
-                            "OR",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 18,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        TextButton(
-                          style: AppStyles.flatButtonStyle(
-                            padding: const EdgeInsets.only(top: 13, bottom: 13),
-                            backgroundColor: AppColors.secondary,
-                          ),
-                          onPressed: () {},
-                          child: const Text(
-                            "Use Username/Email",
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        TextButton.icon(
-                          icon: const Icon(
-                            Icons.facebook,
-                            color: Colors.white,
-                            size: 18,
-                          ),
-                          style: AppStyles.flatButtonStyle(
-                            padding: const EdgeInsets.only(top: 13, bottom: 13),
-                            backgroundColor: const Color(0XFF1878F3),
-                          ),
-                          onPressed: _facebookTapped,
-                          label: const Text(
-                            "Login with Facebook",
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        TextButton.icon(
-                          icon: SvgPicture.asset(
-                            "assets/icons/google-plus.svg",
-                            color: Colors.red,
-                            height: 18,
-                            width: 18,
-                          ),
-                          style: AppStyles.flatButtonStyle(
-                            padding: const EdgeInsets.only(top: 13, bottom: 13),
-                            backgroundColor: AppColors.white,
-                          ),
-                          onPressed: _googleTapped,
-                          label: const Text(
-                            "Login with Google",
-                            style: TextStyle(fontSize: 16, color: Colors.black),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        TextButton.icon(
-                          icon: SvgPicture.asset(
-                            "assets/icons/icons8_apple_logo.svg",
-                            color: Colors.white,
-                            height: 18,
-                            width: 18,
-                          ),
-                          style: AppStyles.flatButtonStyle(
-                            padding: const EdgeInsets.only(top: 13, bottom: 13),
-                            backgroundColor: AppColors.black,
-                          ),
-                          onPressed: _appleTapped,
-                          label: const Text(
-                            "Login with Apple",
-                            style: TextStyle(fontSize: 16),
+                        //social login
+                        Visibility(
+                          visible: !useEmail,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Center(
+                                child: Text(
+                                  "OR",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 18,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              TextButton(
+                                style: AppStyles.flatButtonStyle(
+                                  padding: const EdgeInsets.only(
+                                      top: 13, bottom: 13),
+                                  backgroundColor: AppColors.secondary,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    useEmail = true;
+                                  });
+                                },
+                                child: const Text(
+                                  "Use Username/Email",
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              TextButton.icon(
+                                icon: const Icon(
+                                  Icons.facebook,
+                                  color: Colors.white,
+                                  size: 18,
+                                ),
+                                style: AppStyles.flatButtonStyle(
+                                  padding: const EdgeInsets.only(
+                                      top: 13, bottom: 13),
+                                  backgroundColor: const Color(0XFF1878F3),
+                                ),
+                                onPressed: _facebookTapped,
+                                label: const Text(
+                                  "Login with Facebook",
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              TextButton.icon(
+                                icon: SvgPicture.asset(
+                                  "assets/icons/google-plus.svg",
+                                  color: Colors.red,
+                                  height: 18,
+                                  width: 18,
+                                ),
+                                style: AppStyles.flatButtonStyle(
+                                  padding: const EdgeInsets.only(
+                                      top: 13, bottom: 13),
+                                  backgroundColor: AppColors.white,
+                                ),
+                                onPressed: _googleTapped,
+                                label: const Text(
+                                  "Login with Google",
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.black),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              TextButton.icon(
+                                icon: SvgPicture.asset(
+                                  "assets/icons/icons8_apple_logo.svg",
+                                  color: Colors.white,
+                                  height: 18,
+                                  width: 18,
+                                ),
+                                style: AppStyles.flatButtonStyle(
+                                  padding: const EdgeInsets.only(
+                                      top: 13, bottom: 13),
+                                  backgroundColor: AppColors.black,
+                                ),
+                                onPressed: _appleTapped,
+                                label: const Text(
+                                  "Login with Apple",
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         const SizedBox(height: 10),
@@ -282,6 +360,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
       Toaster.show(message: "Bad Internet connection");
       return;
     }
+
+    if (!useEmail) {
+      checkPhoneExists();
+      return;
+    }
+
     if (usernameController.text.isEmpty) {
       Flushbar(
         flushbarPosition: FlushbarPosition.TOP,
@@ -559,6 +643,111 @@ class _SignUpScreenState extends State<SignUpScreen> {
       }
     } finally {
       SmartDialog.dismiss();
+    }
+  }
+
+  void checkPhoneExists() async {
+    if (phoneController.text.isEmpty) {
+      Flushbar(
+        flushbarPosition: FlushbarPosition.TOP,
+        title: "Phone Number!",
+        message: "Please enter your phone number or tap use username/email",
+        duration: const Duration(seconds: 3),
+      ).show(context);
+      return;
+    }
+
+    SmartDialog.show(widget: const LoadingBox(), clickBgDismissTemp: false);
+    try {
+      //fetch
+      String url = Site.AUTHENTICATE_USERNAME;
+
+      dynamic data = {
+        "username": phoneNumber,
+        "token_key": Site.TOKEN_KEY,
+      };
+
+      Response response = await post(url, body: data);
+
+      if (response.body.isNotEmpty) {
+        Map<String, dynamic> json = jsonDecode(response.body);
+        if (!json.containsKey("code") && json["data"].toString() != "null") {
+          ToastBar.show(
+              context, "Phone Number already registered. Login instead");
+        } else {
+          //do verification
+          SmartDialog.dismiss();
+          await showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return ValidatePhoneDialog(phone: phoneNumber);
+              }).then((value) async {
+            if (value.toString() == "validated") {
+              await registerPhone();
+            } else if (value.toString() == "email") {
+              useEmail = true;
+            } else {
+              Toaster.show(message: "Unable to verify your number.");
+            }
+          });
+        }
+
+        //end
+      } else {
+        ToastBar.show(context, "Authentication denied");
+      }
+    } finally {
+      SmartDialog.dismiss();
+      setState(() {});
+    }
+  }
+
+  Future<void> registerPhone() async {
+    SmartDialog.show(widget: const LoadingBox(), clickBgDismissTemp: false);
+    try {
+      //fetch
+      String url = Site.REGISTER_USERNAME;
+      dynamic data = {
+        "username": phoneNumber,
+        "phone": phoneNumber,
+        "token_key": Site.TOKEN_KEY,
+      };
+
+      Response response = await post(url, body: data);
+
+      if (response.statusCode == 200 && response.body.isNotEmpty) {
+        //end
+        Map<String, dynamic> json = jsonDecode(response.body);
+        if (json.containsKey("code") || json["data"].toString() == "null") {
+          Toaster.show(message: json["message"].toString());
+        } else {
+          //success
+          Map<String, dynamic> jsonData = json["data"];
+
+          //save user session
+          userSession.createLoginSession(
+              userID: jsonData["ID"],
+              xusername: jsonData["user_login"],
+              xemail: jsonData["user_email"],
+              logged: true);
+          // Toast.show(context, "Registration completed!", title: "Success"); //causes error here, should be used on home page or checkout page
+          Toaster.show(message: "Registration completed!");
+          userSession.reload();
+          SmartDialog.dismiss();
+
+          //check where to go after succesful login
+          Future.delayed(Duration.zero, () {
+            Navigator.pop(context);
+          });
+        }
+      } else {
+        Toaster.show(
+            message:
+                "Registration denied by the server! - Your phone number may already exists.");
+      }
+    } finally {
+      SmartDialog.dismiss();
+      setState(() {});
     }
   }
 }

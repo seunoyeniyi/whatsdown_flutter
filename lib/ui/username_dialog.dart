@@ -14,28 +14,41 @@ class _UsernameDialogState extends State<UsernameDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              InputForm(
-                controller: usernameController,
-                hintText: "Username",
-              ),
-              const SizedBox(height: 10),
-              TextButton(
-                style: AppStyles.flatButtonStyle(),
-                onPressed: () {
-                  Navigator.pop(context, usernameController.text);
-                },
-                child: const Text("SUBMIT"),
-              ),
-            ],
+    return Dialog(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            color: Colors.white,
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Your Username",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                InputForm(
+                  controller: usernameController,
+                  hintText: "Username",
+                ),
+                const SizedBox(height: 10),
+                TextButton(
+                  style: AppStyles.flatButtonStyle(),
+                  onPressed: () {
+                    Navigator.pop(context, usernameController.text);
+                  },
+                  child: const Text("SUBMIT"),
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -27,14 +30,29 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   init() async {
     await userSession.init();
     checkLogin();
+    counterCheckLogin();
+  }
+
+  bool popped = false;
+  Timer? timer;
+  counterCheckLogin() async {
+    timer = Timer.periodic(const Duration(milliseconds: 500), (_) {
+      if (!popped) {
+        checkLogin();
+      }
+    });
   }
 
   checkLogin() async {
     await userSession.reload();
     if (userSession.logged()) {
       if (Navigator.canPop(context)) {
+        popped = true;
+        timer?.cancel();
         Navigator.pop(context);
       } else {
+        popped = true;
+        timer?.cancel();
         SystemNavigator.pop();
       }
     }
