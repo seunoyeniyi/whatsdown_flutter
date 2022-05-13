@@ -26,7 +26,27 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 apply plugin: 'com.google.gms.google-services'
 
+def keystoreProperties = new Properties()
+   def keystorePropertiesFile = rootProject.file('key.properties')
+   if (keystorePropertiesFile.exists()) {
+       keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+   }
+
 android {
+    signingConfigs {
+        debug {
+            storeFile file('C:\\Users\\USER\\Desktop\\Fiverr Submits\\WhatsDown\\whatsdown.jks')
+            storePassword 'whatsdownpass123A$'
+            keyPassword 'whatsdownpass123A$'
+            keyAlias 'whatsdown'
+        }
+        release {
+            storeFile file('C:\\Users\\USER\\Desktop\\Fiverr Submits\\WhatsDown\\whatsdown.jks')
+            keyAlias 'whatsdown'
+            storePassword 'whatsdownpass123A$'
+            keyPassword 'whatsdownpass123A$'
+        }
+    }
     compileSdkVersion 30
 
     compileOptions {
@@ -50,13 +70,14 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true
+        signingConfig signingConfigs.release
     }
 
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
         }
     }
 }
@@ -73,4 +94,5 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:30.0.0')
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-messaging:20.1.0'
+    // implementation 'com.google.android.material:material:1.6.0'
 }

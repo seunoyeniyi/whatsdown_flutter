@@ -7,8 +7,6 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:http/http.dart';
 import 'package:skyewooapp/handlers/user_session.dart';
 import 'package:skyewooapp/models/banner.dart';
-import 'package:skyewooapp/models/cart_item.dart';
-import 'package:skyewooapp/models/product.dart';
 import 'package:skyewooapp/site.dart';
 
 class HomeController extends GetxController {

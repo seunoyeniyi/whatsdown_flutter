@@ -94,8 +94,8 @@ class _ProductCardState extends State<ProductCard> {
                         widget.image != "false" &&
                         Uri.parse(widget.image).isAbsolute) {
                       return CachedNetworkImage(
-                        memCacheHeight: 250,
-                        memCacheWidth: 250,
+                        memCacheHeight: 280,
+                        memCacheWidth: 280,
                         imageUrl: widget.image,
                         placeholder: (context, url) => Shimmer.fromColors(
                           baseColor: AppColors.f1,

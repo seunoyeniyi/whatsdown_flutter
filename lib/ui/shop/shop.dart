@@ -8,7 +8,6 @@ import 'package:skyewooapp/components/shimmer_product_card.dart';
 import 'package:skyewooapp/components/shimmer_shop.dart';
 import 'package:skyewooapp/controllers/products_controller.dart';
 import 'package:skyewooapp/handlers/handlers.dart';
-import 'package:skyewooapp/main.dart';
 import 'package:skyewooapp/models/category.dart';
 import 'package:skyewooapp/models/option.dart';
 import 'package:skyewooapp/models/product.dart';

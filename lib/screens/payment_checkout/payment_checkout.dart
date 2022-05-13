@@ -1,9 +1,8 @@
-import 'dart:convert';
-import 'dart:developer';
+// ignore_for_file: import_of_legacy_library_into_null_safe
 
+import 'dart:convert';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';

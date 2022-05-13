@@ -25,9 +25,6 @@ import 'package:skyewooapp/ui/validate_phone_dialog.dart';
 // import 'package:skyewooapp/screens/signup/components/social_icon.dart';
 
 import '../../../components/already_have_an_account_acheck.dart';
-import '../../../components/rounded_button.dart';
-import '../../../components/rounded_input_field.dart';
-import '../../../components/rounded_password_field.dart';
 // import 'components/or_divider.dart';
 
 class SignUpScreen extends StatefulWidget {

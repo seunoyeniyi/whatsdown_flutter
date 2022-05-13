@@ -1,4 +1,4 @@
-import 'dart:developer';
+// ignore_for_file: import_of_legacy_library_into_null_safe
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';

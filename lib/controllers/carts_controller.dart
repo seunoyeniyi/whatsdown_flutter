@@ -5,7 +5,6 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:http/http.dart';
-import 'package:skyewooapp/handlers/handlers.dart';
 import 'package:skyewooapp/handlers/user_session.dart';
 import 'package:skyewooapp/models/cart_item.dart';
 import 'package:skyewooapp/site.dart';

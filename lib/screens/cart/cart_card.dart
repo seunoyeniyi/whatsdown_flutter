@@ -1,14 +1,11 @@
-import 'dart:developer';
+// ignore_for_file: import_of_legacy_library_into_null_safe
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cart_stepper/cart_stepper.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_html/rich_text_parser.dart';
 import 'package:html_character_entities/html_character_entities.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:skyewooapp/app_colors.dart';
-import 'package:skyewooapp/handlers/app_styles.dart';
 import 'package:skyewooapp/handlers/formatter.dart';
 import 'package:skyewooapp/models/cart_item.dart';
 import 'package:skyewooapp/site.dart';

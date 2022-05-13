@@ -1,3 +1,5 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'dart:convert';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -6,7 +8,6 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:html_character_entities/html_character_entities.dart';
 import 'package:http/http.dart';
-import 'package:skyewooapp/app_colors.dart';
 import 'package:skyewooapp/components/input_form.dart';
 import 'package:skyewooapp/components/input_form_textfield.dart';
 import 'package:skyewooapp/components/loading_box.dart';

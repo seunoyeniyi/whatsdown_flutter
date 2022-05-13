@@ -1,15 +1,9 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:skyewooapp/handlers/app_styles.dart';
 import 'package:skyewooapp/handlers/user_session.dart';
-
-import '../../../components/rounded_button.dart';
-import '../../app_colors.dart';
-import 'background.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({Key? key}) : super(key: key);

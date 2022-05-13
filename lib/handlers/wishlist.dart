@@ -2,6 +2,7 @@ import 'dart:convert';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:connectivity_plus/connectivity_plus.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:http/http.dart';
 import 'package:skyewooapp/handlers/user_session.dart';
 import 'package:skyewooapp/site.dart';

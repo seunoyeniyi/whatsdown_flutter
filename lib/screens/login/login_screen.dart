@@ -24,9 +24,6 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:skyewooapp/ui/validate_phone_dialog.dart';
 
 import '../../../components/already_have_an_account_acheck.dart';
-import '../../../components/rounded_button.dart';
-import '../../../components/rounded_input_field.dart';
-import '../../../components/rounded_password_field.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
