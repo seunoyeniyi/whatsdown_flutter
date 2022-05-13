@@ -1,9 +1,13 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'package:badges/badges.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:skyewooapp/app_colors.dart';
 import 'package:skyewooapp/handlers/cart.dart';
 import 'package:skyewooapp/handlers/handlers.dart';
+import 'package:skyewooapp/handlers/site_info.dart';
 import 'package:skyewooapp/handlers/user_session.dart';
 import 'package:skyewooapp/ui/search/search_delegate.dart';
 
@@ -39,9 +43,11 @@ class AppAppBar extends StatefulWidget implements PreferredSizeWidget {
 
 class _AppAppBarState extends State<AppAppBar> {
   UserSession userSession = UserSession();
+  SiteInfo siteInfo = SiteInfo();
   String cartCount = "0";
   bool showCartCount = false;
   bool showWishlistBadge = false;
+  String logoURL = "";
 
   init() async {
     refreshAll();
@@ -49,8 +55,11 @@ class _AppAppBarState extends State<AppAppBar> {
 
   refreshAll() async {
     await userSession.init();
+    await siteInfo.init();
     cartCount = userSession.last_cart_count;
     showCartCount = (int.parse(cartCount) > 0);
+    logoURL = await siteInfo.getMainLogo();
+
     setState(() {});
     if (userSession.logged()) {
       fetchCart();
@@ -65,6 +74,7 @@ class _AppAppBarState extends State<AppAppBar> {
     widget.controller.updateCartCount = updateCartCount;
     widget.controller.displaySearch = displaySearch;
     widget.controller.refreshAll = refreshAll;
+    widget.controller.updateLogo = updateLogo;
 
     init();
     super.initState();
@@ -76,11 +86,27 @@ class _AppAppBarState extends State<AppAppBar> {
       elevation: widget.elevation,
       title: (() {
         if (widget.titleType == "logo") {
-          return Image.asset(
-            'assets/images/title-logo.png',
-            fit: BoxFit.contain,
-            height: 35,
-          );
+          if (logoURL.length > 10 && Uri.parse(logoURL).isAbsolute) {
+            return CachedNetworkImage(
+              imageUrl: logoURL,
+              placeholder: (context, url) => Image.asset(
+                'assets/images/title-logo.png',
+                fit: BoxFit.contain,
+                height: 30,
+              ),
+              errorWidget: (context, url, error) => Image.asset(
+                'assets/images/title-logo.png',
+                fit: BoxFit.contain,
+                height: 30,
+              ),
+            );
+          } else {
+            return Image.asset(
+              'assets/images/title-logo.png',
+              fit: BoxFit.contain,
+              height: 30,
+            );
+          }
         } else {
           return Text(widget.title);
         }
@@ -235,6 +261,14 @@ class _AppAppBarState extends State<AppAppBar> {
       });
     }
   }
+
+  void updateLogo(String url) {
+    if (mounted) {
+      setState(() {
+        logoURL = url;
+      });
+    }
+  }
 }
 
 class AppAppBarController {
@@ -242,4 +276,5 @@ class AppAppBarController {
   void Function(String)? updateCartCount;
   void Function()? displaySearch;
   void Function()? refreshAll;
+  void Function(String url)? updateLogo;
 }

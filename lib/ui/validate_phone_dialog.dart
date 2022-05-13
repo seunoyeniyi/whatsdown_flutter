@@ -108,6 +108,16 @@ class _ValidatePhoneDialogState extends State<ValidatePhoneDialog> {
                         style: TextStyle(fontSize: 20),
                       ),
                     ),
+                    const SizedBox(height: 10),
+                    TextButton(
+                      style: AppStyles.flatButtonStyle(
+                          backgroundColor: Colors.transparent),
+                      onPressed: sendSMS,
+                      child: const Text(
+                        "Resend Code",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
                     const SizedBox(height: 20),
                     TextButton(
                       style: AppStyles.flatButtonStyle(

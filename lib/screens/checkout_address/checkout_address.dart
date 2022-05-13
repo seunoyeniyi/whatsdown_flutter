@@ -16,7 +16,7 @@ import 'package:skyewooapp/handlers/handlers.dart';
 import 'package:skyewooapp/handlers/user_session.dart';
 import 'package:skyewooapp/models/country.dart';
 import 'package:skyewooapp/models/country_states.dart';
-import 'package:skyewooapp/models/state.dart' as myState;
+import 'package:skyewooapp/models/state.dart' as mystate;
 import 'package:skyewooapp/site.dart';
 
 class CheckoutAddressPage extends StatefulWidget {
@@ -32,7 +32,7 @@ class _CheckoutAddressPageState extends State<CheckoutAddressPage> {
 
   //countiries and states list
   List<Country> countries = [];
-  List<myState.State> states = [];
+  List<mystate.State> states = [];
   List<CountryStates> itStates = [];
 
   //label style
@@ -374,7 +374,7 @@ class _CheckoutAddressPageState extends State<CheckoutAddressPage> {
           }
 
           //add states to country autocomplete
-          states.add(myState.State(countryCode: key, states: countryStates));
+          states.add(mystate.State(countryCode: key, states: countryStates));
         });
 
         //set default country
@@ -396,8 +396,8 @@ class _CheckoutAddressPageState extends State<CheckoutAddressPage> {
   }
 
   List<CountryStates> getCountryStates(
-      String countryCode, List<myState.State> stateLists) {
-    for (myState.State countryS in stateLists) {
+      String countryCode, List<mystate.State> stateLists) {
+    for (mystate.State countryS in stateLists) {
       if (countryS.getCountryCode == countryCode) {
         return countryS.getStates;
       }

@@ -51,4 +51,24 @@ class SiteInfo {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return preferences.getInt("last_check") ?? 0;
   }
+
+  Future<void> setSplashLogo(String url) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setString("splash_logo", url);
+  }
+
+  Future<void> setMainLogo(String url) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setString("main_logo", url);
+  }
+
+  Future<String> getSplashLogo() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getString("splash_logo") ?? "0";
+  }
+
+  Future<String> getMainLogo() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getString("main_logo") ?? "0";
+  }
 }

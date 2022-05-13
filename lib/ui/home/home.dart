@@ -12,7 +12,7 @@ import 'package:skyewooapp/controllers/home_controller.dart';
 import 'package:skyewooapp/controllers/products_controller.dart';
 import 'package:skyewooapp/handlers/app_styles.dart';
 import 'package:skyewooapp/handlers/handlers.dart';
-import 'package:skyewooapp/main.dart';
+import 'package:skyewooapp/home.dart';
 import 'package:skyewooapp/models/product.dart';
 import 'package:skyewooapp/screens/archive/archive.dart';
 import 'package:skyewooapp/screens/browser.dart';
@@ -41,7 +41,7 @@ class _HomeBodyState extends State<HomeBody> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    final double itemHeight = (size.height - kToolbarHeight - 180) / 2;
+    final double itemHeight = (size.height - kToolbarHeight - 140) / 2;
     final double itemWidth = size.width / 2;
 
     return SingleChildScrollView(
@@ -258,8 +258,8 @@ class _HomeBodyState extends State<HomeBody> {
                                       banner.getImage != "false" &&
                                       Uri.parse(banner.getImage).isAbsolute) {
                                     return CachedNetworkImage(
-                                      memCacheHeight: 250,
-                                      memCacheWidth: 300,
+                                      memCacheHeight: 380,
+                                      memCacheWidth: 400,
                                       imageUrl: banner.getImage,
                                       placeholder: (context, url) =>
                                           Shimmer.fromColors(

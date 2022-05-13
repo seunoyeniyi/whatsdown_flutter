@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:another_flushbar/flushbar.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -277,28 +278,33 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 ),
                               ),
                               const SizedBox(height: 10),
-                              TextButton.icon(
-                                icon: SvgPicture.asset(
-                                  "assets/icons/icons8_apple_logo.svg",
-                                  color: Colors.white,
-                                  height: 18,
-                                  width: 18,
-                                ),
-                                style: AppStyles.flatButtonStyle(
-                                  padding: const EdgeInsets.only(
-                                      top: 13, bottom: 13),
-                                  backgroundColor: AppColors.black,
-                                ),
-                                onPressed: _appleTapped,
-                                label: const Text(
-                                  "Login with Apple",
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                              ),
+                              (() {
+                                if (Platform.isIOS) {
+                                  return TextButton.icon(
+                                    icon: SvgPicture.asset(
+                                      "assets/icons/icons8_apple_logo.svg",
+                                      color: Colors.white,
+                                      height: 18,
+                                      width: 18,
+                                    ),
+                                    style: AppStyles.flatButtonStyle(
+                                      padding: const EdgeInsets.only(
+                                          top: 13, bottom: 13),
+                                      backgroundColor: AppColors.black,
+                                    ),
+                                    onPressed: _appleTapped,
+                                    label: const Text(
+                                      "Login with Apple",
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  );
+                                } else {
+                                  return const SizedBox();
+                                }
+                              }()),
                             ],
                           ),
                         ),
-                        const SizedBox(height: 10),
 
                         // const OrDivider(),
                         // Row(
@@ -485,7 +491,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     // or FacebookAuth.i.login()
     if (result.status == LoginStatus.success) {
       // you are logged
-      final AccessToken accessToken = result.accessToken!;
+      // final AccessToken accessToken = result.accessToken!;
       //user data
       final userData = await FacebookAuth.instance.getUserData();
       String facebookID = userData["id"].toString();

@@ -63,7 +63,7 @@ class _ShimmerProductCardState extends State<ShimmerProductCard> {
                       highlightColor: shimHighlightColor,
                       period: const Duration(milliseconds: 1000),
                       child: SizedBox(
-                        height: 25,
+                        height: 20,
                         child: Container(
                           color: AppColors.f1,
                         ),

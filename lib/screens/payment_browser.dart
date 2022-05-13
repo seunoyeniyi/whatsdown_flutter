@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:skyewooapp/components/loading_box.dart';
 import 'package:skyewooapp/handlers/app_styles.dart';
-import 'package:skyewooapp/main.dart';
+import 'package:skyewooapp/home.dart';
 import 'package:skyewooapp/site.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 

@@ -1,6 +1,5 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe
 
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -10,8 +9,8 @@ import 'package:skyewooapp/handlers/user_session.dart';
 import 'package:skyewooapp/site.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  log("Message background");
-  log(message.toString());
+  // log("Message background");
+  // log(message.toString());
 }
 
 class PushNotificationService {
@@ -25,6 +24,7 @@ class PushNotificationService {
 
     _fcm.getToken().then((token) async {
       String deviceToken = token.toString();
+      // log(deviceToken);
       try {
         var connectivity = await Connectivity().checkConnectivity();
         if (connectivity == ConnectivityResult.none) {

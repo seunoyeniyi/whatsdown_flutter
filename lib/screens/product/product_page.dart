@@ -16,6 +16,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:html_character_entities/html_character_entities.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:http/http.dart';
+import 'package:share/share.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:skyewooapp/app_colors.dart';
 import 'package:skyewooapp/components/attributes/attributes_selector.dart';
@@ -82,6 +83,7 @@ class _ProductPageState extends State<ProductPage> {
   int reviewsCount = 0;
   List<Comment> comments = [];
   Map<String, String> sizeChartImage = {"type": "none", "path": ""};
+  String productUrl = "";
   //END PRODUCT DETAILS
 
   init() async {
@@ -148,8 +150,8 @@ class _ProductPageState extends State<ProductPage> {
                             return Container(
                               color: AppColors.f1,
                               child: CachedNetworkImage(
-                                memCacheHeight: 450,
-                                memCacheWidth: 450,
+                                memCacheHeight: 480,
+                                memCacheWidth: 480,
                                 imageUrl: product.getImage,
                                 placeholder: (context, url) =>
                                     Shimmer.fromColors(
@@ -181,38 +183,70 @@ class _ProductPageState extends State<ProductPage> {
                         }()),
                       ),
 
-                      //wishlist button
+                      //share button
                       Positioned(
                         right: 10,
                         bottom: 10,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            setState(() {
-                              if (inWishlist) {
-                                updateWishlist(product.getID, "remove");
-                              } else {
-                                updateWishlist(product.getID, "add");
-                              }
-                              inWishlist =
-                                  !inWishlist; //to change icon immediately
-                            });
-                          },
-                          child: SvgPicture.asset(
-                            (inWishlist)
-                                ? "assets/icons/icons8_heart.svg"
-                                : "assets/icons/icons8_heart_outline.svg",
-                            width: 30,
-                            height: 30,
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: Size.zero,
-                            shape: const CircleBorder(),
-                            padding: const EdgeInsets.only(
-                                left: 6, right: 6, top: 8, bottom: 6),
-                            primary: Colors.white, // <-- Button color
-                            onPrimary: AppColors.black, // <-- Splash color
-                            elevation: 5,
-                          ),
+                        child: Row(
+                          children: [
+                            ElevatedButton(
+                              onPressed: () async {
+                                Share.share("GET " +
+                                    widget.product.getName +
+                                    ' - From WhatsDown ' +
+                                    productUrl);
+                              },
+                              child: Row(
+                                children: const [
+                                  Icon(
+                                    Icons.share,
+                                    size: 18,
+                                    color: AppColors.secondary,
+                                  ),
+                                  SizedBox(width: 3),
+                                  Text("Share"),
+                                ],
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: Size.zero,
+                                padding: const EdgeInsets.only(
+                                    left: 8, right: 8, top: 5, bottom: 5),
+                                primary: Colors.white, // <-- Button color
+                                onPrimary: AppColors.black, // <-- Splash color
+                                elevation: 5,
+                              ),
+                            ),
+                            //whish list button
+                            ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  if (inWishlist) {
+                                    updateWishlist(product.getID, "remove");
+                                  } else {
+                                    updateWishlist(product.getID, "add");
+                                  }
+                                  inWishlist =
+                                      !inWishlist; //to change icon immediately
+                                });
+                              },
+                              child: SvgPicture.asset(
+                                (inWishlist)
+                                    ? "assets/icons/icons8_heart.svg"
+                                    : "assets/icons/icons8_heart_outline.svg",
+                                width: 25,
+                                height: 23,
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: Size.zero,
+                                shape: const CircleBorder(),
+                                padding: const EdgeInsets.only(
+                                    left: 6, right: 6, top: 8, bottom: 6),
+                                primary: Colors.white, // <-- Button color
+                                onPrimary: AppColors.black, // <-- Splash color
+                                elevation: 5,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -691,6 +725,10 @@ class _ProductPageState extends State<ProductPage> {
 
       if (response.statusCode == 200 && response.body.isNotEmpty) {
         Map<String, dynamic> json = jsonDecode(response.body);
+
+        //###### PRODUCT URL #######
+        productUrl = json["permalink"].toString();
+        //###### END PRODUCT URL #######
 
         //############## DESCRIPTION #####################
         description =

@@ -89,7 +89,7 @@ class AppBarSearchDelegate extends SearchDelegate {
   @override
   Widget buildResults(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    final double itemHeight = (size.height - kToolbarHeight - 180) / 2;
+    final double itemHeight = (size.height - kToolbarHeight - 140) / 2;
     final double itemWidth = size.width / 2;
 
     if (!productsController.isLoading.value) {

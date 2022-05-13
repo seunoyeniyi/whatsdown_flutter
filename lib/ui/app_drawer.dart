@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:skyewooapp/handlers/handlers.dart';
 import 'package:skyewooapp/handlers/user_session.dart';
-import 'package:skyewooapp/main.dart';
+import 'package:skyewooapp/home.dart';
 import 'package:skyewooapp/screens/archive/archive.dart';
 import 'package:skyewooapp/screens/browser.dart';
 import 'package:skyewooapp/site.dart';
@@ -62,8 +62,8 @@ class _AppDrawerState extends State<AppDrawer> {
                             "assets/images/boy_man_avatar.png",
                             height: 70,
                             width: 70,
-                            cacheHeight: 90,
-                            cacheWidth: 90,
+                            cacheHeight: 150,
+                            cacheWidth: 150,
                           ),
                         ),
                         Padding(

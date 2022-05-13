@@ -13,7 +13,7 @@ import 'package:skyewooapp/handlers/app_styles.dart';
 import 'package:skyewooapp/handlers/formatter.dart';
 import 'package:skyewooapp/handlers/handlers.dart';
 import 'package:skyewooapp/handlers/user_session.dart';
-import 'package:skyewooapp/main.dart';
+import 'package:skyewooapp/home.dart';
 import 'package:skyewooapp/screens/payment_browser.dart';
 import 'package:skyewooapp/site.dart';
 
