@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+// import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -484,36 +484,36 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   _facebookTapped() async {
-    final LoginResult result = await FacebookAuth.instance.login(
-      permissions: ['id', 'public_profile', 'email'],
-    ); // by default we request the email and the public profile
+    // final LoginResult result = await FacebookAuth.instance.login(
+    //   permissions: ['id', 'public_profile', 'email'],
+    // ); // by default we request the email and the public profile
 
-    // or FacebookAuth.i.login()
-    if (result.status == LoginStatus.success) {
-      // you are logged
-      // final AccessToken accessToken = result.accessToken!;
-      //user data
-      final userData = await FacebookAuth.instance.getUserData();
-      String facebookID = userData["id"].toString();
-      String email = userData["email"].toString();
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return const UsernameDialog();
-          }).then((value) {
-        if (value != null) {
-          if (value.toString().isNotEmpty) {
-            tryRegisteringByType(
-                facebookID, "facebook", value.toString(), email);
-          }
-        }
-      });
-    } else {
-      //couldn't sign in with facebook
-      Toaster.show(message: "Couldn't sign up with Facebook");
-      log(result.status.toString());
-      log(result.message.toString());
-    }
+    // // or FacebookAuth.i.login()
+    // if (result.status == LoginStatus.success) {
+    //   // you are logged
+    //   // final AccessToken accessToken = result.accessToken!;
+    //   //user data
+    //   final userData = await FacebookAuth.instance.getUserData();
+    //   String facebookID = userData["id"].toString();
+    //   String email = userData["email"].toString();
+    //   showDialog(
+    //       context: context,
+    //       builder: (BuildContext context) {
+    //         return const UsernameDialog();
+    //       }).then((value) {
+    //     if (value != null) {
+    //       if (value.toString().isNotEmpty) {
+    //         tryRegisteringByType(
+    //             facebookID, "facebook", value.toString(), email);
+    //       }
+    //     }
+    //   });
+    // } else {
+    //   //couldn't sign in with facebook
+    //   Toaster.show(message: "Couldn't sign up with Facebook");
+    //   log(result.status.toString());
+    //   log(result.message.toString());
+    // }
   }
 
   final GoogleSignIn _googleSignIn = GoogleSignIn(
