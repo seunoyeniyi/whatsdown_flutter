@@ -21,7 +21,7 @@ import 'package:skyewooapp/screens/login/background.dart';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:skyewooapp/site.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+// import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:skyewooapp/ui/validate_phone_dialog.dart';
 
 import '../../../components/already_have_an_account_acheck.dart';
@@ -414,24 +414,24 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   _facebookTapped() async {
-    final LoginResult result = await FacebookAuth.instance.login(
-      permissions: ['id', 'public_profile', 'email'],
-    ); // by default we request the email and the public profile
+    // final LoginResult result = await FacebookAuth.instance.login(
+    //   permissions: ['id', 'public_profile', 'email'],
+    // ); // by default we request the email and the public profile
 
-    // or FacebookAuth.i.login()
-    if (result.status == LoginStatus.success) {
-      // you are logged
-      // final AccessToken accessToken = result.accessToken!;
-      //user data
-      final userData = await FacebookAuth.instance.getUserData();
-      String facebookID = userData["id"].toString();
-      fetchLoginByType(facebookID, "facebook");
-    } else {
-      //couldn't sign in with facebook
-      Toaster.show(message: "Couldn't login with Facebook");
-      log(result.status.toString());
-      log(result.message.toString());
-    }
+    // // or FacebookAuth.i.login()
+    // if (result.status == LoginStatus.success) {
+    //   // you are logged
+    //   // final AccessToken accessToken = result.accessToken!;
+    //   //user data
+    //   final userData = await FacebookAuth.instance.getUserData();
+    //   String facebookID = userData["id"].toString();
+    //   fetchLoginByType(facebookID, "facebook");
+    // } else {
+    //   //couldn't sign in with facebook
+    //   Toaster.show(message: "Couldn't login with Facebook");
+    //   log(result.status.toString());
+    //   log(result.message.toString());
+    // }
   }
 
   final GoogleSignIn _googleSignIn = GoogleSignIn(
