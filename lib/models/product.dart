@@ -14,6 +14,8 @@ class Product {
   String stockStatus = "";
   String lowestPrice = "0";
   String highestPrice = "0";
+  List<Map<String, dynamic>> attributes = [];
+  List<Map<String, dynamic>> variations = [];
 
   Product({this.id = "", this.name = ""});
 
@@ -69,7 +71,13 @@ class Product {
 
   set setHighestPrice(String highestPrice) => this.highestPrice = highestPrice;
 
-  // JSONArray variations = new JSONArray();
-  // JSONArray attributes = new JSONArray();
+  List<Map<String, dynamic>> get getAttributes => this.attributes;
 
+  set setAttributes(List<Map<String, dynamic>> attributes) =>
+      this.attributes = attributes;
+
+  List<Map<String, dynamic>> get getVariations => this.variations;
+
+  set setVariations(List<Map<String, dynamic>> variations) =>
+      this.variations = variations;
 }

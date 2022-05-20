@@ -296,14 +296,18 @@ class _LoginScreenState extends State<LoginScreen> {
             right: 14,
             top: 50,
             child: TextButton.icon(
-              icon: const Icon(Icons.arrow_right, color: Colors.white),
-              label: const Text(
+              icon: const Text(
                 "SKIP",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                   fontSize: 18,
                 ),
+              ),
+              label: const Icon(
+                Icons.arrow_forward_ios,
+                size: 20,
+                color: Colors.white,
               ),
               onPressed: () {
                 Navigator.pop(context, "skip");

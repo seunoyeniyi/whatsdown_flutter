@@ -4,16 +4,21 @@ import 'package:skyewooapp/components/product_card.dart';
 import 'package:skyewooapp/components/shimmer_product_card.dart';
 import 'package:skyewooapp/components/shimmer_shop.dart';
 import 'package:skyewooapp/controllers/products_controller.dart';
+import 'package:skyewooapp/controllers/search_suggestion_controller.dart';
 import 'package:skyewooapp/handlers/handlers.dart';
 import 'package:skyewooapp/models/category.dart';
 import 'package:skyewooapp/models/option.dart';
 import 'package:skyewooapp/models/product.dart';
 import 'package:skyewooapp/models/tag.dart';
 import 'package:skyewooapp/screens/product/product_page.dart';
+import 'package:skyewooapp/ui/filter_dialog.dart';
+import 'package:skyewooapp/ui/search/suggestion_card.dart';
+import 'package:skyewooapp/ui/search/suggestion_shimmer.dart';
 
 class AppBarSearchDelegate extends SearchDelegate {
   ProductsController productsController =
       Get.put(ProductsController(initialize: false, isLoading: false));
+  SuggestionController suggestionController = Get.put(SuggestionController());
 
   ScrollController _scrollController =
       ScrollController(initialScrollOffset: 5.0);
@@ -66,11 +71,22 @@ class AppBarSearchDelegate extends SearchDelegate {
       ),
       IconButton(
         onPressed: () {
-          if (query.isEmpty) {
-            close(context, null); //close searchbar
-          } else {
-            query = "";
-          }
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return FilterDialog(
+                  categories: categories,
+                  tags: tags,
+                  colors: colors,
+                  priceRange: priceRange,
+                  selectedCatIndex: selectedCatIndex,
+                  selectedColorIndex: selectedColorIndex,
+                  selectedTagIndex: selectedTagIndex,
+                  selected_category: productsController.selected_category,
+                  selected_color: productsController.selected_color,
+                  selected_tag: productsController.selected_tag,
+                );
+              }).then(filterResult);
         },
         icon: const Icon(Icons.tune),
       ),
@@ -84,6 +100,50 @@ class AppBarSearchDelegate extends SearchDelegate {
           close(context, null); //close searchbar
         },
         icon: const Icon(Icons.arrow_back));
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    if (query.length > 3) {
+      suggestionController.search.value = query;
+      suggestionController.fetchProducts();
+    }
+    return Container(
+      color: Colors.white,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Obx(() {
+            if (suggestionController.isLoading.value) {
+              return const SuggestionShimmer();
+            } else {
+              return Column(
+                children: List.generate(suggestionController.products.length,
+                    (index) {
+                  return SuggestionCard(
+                    product: suggestionController.products[index],
+                    onSelected: (Product product) {
+                      if (product.getID != "0" && product.getImage.isNotEmpty) {
+                        //push
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProductPage(product: product),
+                          ),
+                        );
+                      } else {
+                        //search
+                        showResults(context);
+                      }
+                    },
+                  );
+                }),
+              );
+            }
+          }),
+        ),
+      ),
+    );
   }
 
   @override
@@ -124,12 +184,6 @@ class AppBarSearchDelegate extends SearchDelegate {
         }),
       ),
     );
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    // TODO0: this is the suggestion
-    return Container();
   }
 
   Widget productsLayout(

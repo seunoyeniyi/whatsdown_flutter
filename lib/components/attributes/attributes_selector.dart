@@ -11,8 +11,10 @@ class AttributesSelector extends StatefulWidget {
     required this.attributes,
     required this.variations,
     required this.onChanged,
+    this.showLabel = true,
   }) : super(key: key);
 
+  final bool showLabel;
   final List<Attribute> attributes;
   final List<Map<String, dynamic>> variations;
   final Function(bool found, String productID, String price) onChanged;
@@ -32,11 +34,14 @@ class _AttributesSelectorState extends State<AttributesSelector> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                widget.attributes[attrIndex].getLabel.capitalize(),
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
+              Visibility(
+                visible: widget.showLabel,
+                child: Text(
+                  widget.attributes[attrIndex].getLabel.capitalize(),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
                 ),
               ),
               const SizedBox(height: 5),

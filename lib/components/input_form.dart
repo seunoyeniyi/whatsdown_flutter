@@ -16,7 +16,7 @@ class InputForm<T> extends StatefulWidget {
     this.padding = const EdgeInsets.only(left: 15, right: 15),
     this.backgroundColor = Colors.white,
     this.hintTextColor = Colors.black54,
-    this.textColor = Colors.black54,
+    this.textColor = Colors.black,
     this.borderColor = AppColors.hover,
     this.radius = 5.0,
     this.borderWidth = 1.0,

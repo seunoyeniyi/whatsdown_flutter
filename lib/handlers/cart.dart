@@ -38,10 +38,12 @@ class Cart {
     return itemsCount;
   }
 
-  Future<Map<String, dynamic>> addToCart(
-      {required String productID,
-      required int quantity,
-      bool replaceQuantity = false}) async {
+  Future<Map<String, dynamic>> addToCart({
+    required String productID,
+    required int quantity,
+    bool replaceQuantity = false,
+    String wooCoItems = "",
+  }) async {
     String status = "failed";
     String message = "";
     String contentsCount = "0";
@@ -66,6 +68,9 @@ class Cart {
       "quantity": quantity.toString(),
       "token_key": Site.TOKEN_KEY,
     };
+    if (wooCoItems.isNotEmpty) {
+      data["wooco_ids"] = wooCoItems;
+    }
     if (userSession.ID != "0" || userSession.logged()) {
       data["user"] = userSession.ID;
     }

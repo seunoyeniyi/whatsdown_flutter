@@ -14,10 +14,6 @@ import 'package:skyewooapp/screens/login/login_screen.dart';
 import 'package:skyewooapp/screens/signup/signup_screen.dart';
 import 'package:skyewooapp/screens/welcome/welcome_screen.dart';
 
-
-
-//dfdf
-
 void main() async {
   runApp(const MyApp());
 }

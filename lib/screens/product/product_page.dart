@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:badges/badges.dart';
 // ignore: import_of_legacy_library_into_null_safe
@@ -31,6 +32,7 @@ import 'package:skyewooapp/models/attribute.dart';
 import 'package:skyewooapp/models/comment.dart';
 import 'package:skyewooapp/models/option.dart';
 import 'package:skyewooapp/models/product.dart';
+import 'package:skyewooapp/screens/product/wooco_card.dart';
 import 'package:skyewooapp/site.dart';
 import 'package:skyewooapp/screens/archive/archive.dart';
 import 'package:skyewooapp/screens/product/reviews.dart';
@@ -84,6 +86,12 @@ class _ProductPageState extends State<ProductPage> {
   List<Comment> comments = [];
   Map<String, String> sizeChartImage = {"type": "none", "path": ""};
   String productUrl = "";
+  //#### WooCo Offer #####
+  List<Product> wooCoLists = [];
+  Map<String, String> wooCoItemsMap = {};
+  String wooCoItemsString = "";
+  bool isComboProduct = false;
+  //#### WooCo Offer #####
   //END PRODUCT DETAILS
 
   init() async {
@@ -291,7 +299,7 @@ class _ProductPageState extends State<ProductPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          product.getName + " " + product.getID,
+                          product.getName,
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -385,12 +393,32 @@ class _ProductPageState extends State<ProductPage> {
                                         visible: priceAvailable,
                                         child: Center(
                                           child: Text(
-                                            Site.CURRENCY +
+                                            (isComboProduct ? "Combo " : "") +
+                                                Site.CURRENCY +
                                                 Formatter.format(productPrice),
                                             style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 24,
                                             ),
+                                          ),
+                                        ),
+                                      ),
+                                      //combo products
+                                      Visibility(
+                                        visible: isComboProduct &&
+                                            wooCoLists.isNotEmpty,
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 20),
+                                          child: Column(
+                                            children: List.generate(
+                                                wooCoLists.length, (index) {
+                                              return WooCoCard(
+                                                product: wooCoLists[index],
+                                                onEachProductChanged:
+                                                    _onEachComboProductChanged,
+                                              );
+                                            }),
                                           ),
                                         ),
                                       ),
@@ -787,11 +815,13 @@ class _ProductPageState extends State<ProductPage> {
         }
         //############## END CATEGRY NAME #####################
 
-        //############### ATTRIBUTES and VARIATIONS ####################
+        //############### TYPE VARIABLE ####################
         if (json["type"].toString() == "variable" ||
             json["product_type"].toString() == "variable") {
           variations = List.from(json["variations"]);
           List<Map<String, dynamic>> attrs = List.from(json["attributes"]);
+
+          isVariable = true;
 
           //for each attributes
           for (var attribute in attrs) {
@@ -813,8 +843,55 @@ class _ProductPageState extends State<ProductPage> {
               options: option,
             ));
           }
+        } else if (json["type"].toString() == "wooco" ||
+            json["product_type"].toString() == "wooco") {
+          //############################ FOR COMBO OFFER PRODUCT ###########################
+          productPrice = json["price"].toString();
+          isComboProduct = true;
+          List<Map<String, dynamic>> wooCoItems =
+              List.from(json["wooco_items"]);
+          for (var item in wooCoItems) {
+            Product _product = Product();
+            _product.setID = item["ID"].toString();
+            _product.setName = item["name"].toString();
+            _product.setImage = item["image"].toString();
+            _product.setPrice = item["price"].toString();
+            _product.setRegularPrice = item["regular_price"].toString();
+            _product.setType = item["type"].toString();
+            _product.setProductType = item["product_type"].toString();
+            _product.setDescription = item["description"].toString();
+            _product.setInWishList = item["in_wishlist"].toString();
+            _product.setCategories = item["categories"].toString();
+            _product.setStockStatus = item["stock_status"].toString();
+            _product.setLowestPrice = item["lowest_variation_price"].toString();
+            _product.setHighestPrice =
+                item["highest_variation_price"].toString();
+            _product.setAttributes = (item["variations"].toString() == "null" ||
+                    item["type"].toString() != "variable" ||
+                    item["type"].toString() != "variable")
+                ? []
+                : List.from(item["attributes"]);
+            _product.setVariations = (item["variations"].toString() == "null" ||
+                    item["type"].toString() != "variable" ||
+                    item["type"].toString() != "variable")
+                ? []
+                : List.from(item["variations"]);
+
+            //check if key exists
+            if (wooCoItemsMap.containsKey(product.getID)) {
+              wooCoItemsMap[_product.getID] = _product.getID + "/1";
+            } else {
+              wooCoItemsMap[_product.getID] = _product.getID + "/1";
+            }
+
+            wooCoLists.add(_product);
+          }
+        } else {
+          //##################### SIMPLE PRODUCTS #######################
+          productPrice = json["price"].toString();
+          isVariable = false;
+          priceAvailable = true;
         }
-        //##################### END ATTRIBUTES and VARIATIONS #######################
 
         //################## RATING AND REVIEWS ###################
         List<Map<String, dynamic>> jsonComments = List.from(json["comments"]);
@@ -866,8 +943,10 @@ class _ProductPageState extends State<ProductPage> {
             text: "Adding to cart...",
           ));
 
-      Map<String, dynamic> result =
-          await cart.addToCart(productID: cartProductID, quantity: _quantity);
+      Map<String, dynamic> result = await cart.addToCart(
+          productID: cartProductID,
+          quantity: _quantity,
+          wooCoItems: isComboProduct ? wooCoItemsString : "");
 
       if (result["status"] == "success") {
         setState(() {
@@ -891,5 +970,16 @@ class _ProductPageState extends State<ProductPage> {
       );
     }
     SmartDialog.dismiss();
+  }
+
+  _onEachComboProductChanged(String parentID, String productID) {
+    //check if key exists
+    if (wooCoItemsMap.containsKey(parentID)) {
+      wooCoItemsMap[parentID] = productID + "/1";
+    } else {
+      wooCoItemsMap[parentID] = productID + "/1";
+    }
+    //wooCoItemsMap to string separated with comma
+    wooCoItemsString = wooCoItemsMap.values.join(",");
   }
 }
