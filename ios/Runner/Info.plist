@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>FacebookAdvertiserIDCollectionEnabled</key>
+	<string>TRUE</string>
+	<key>FacebookAutoLogAppEventsEnabled</key>
+	<string>TRUE</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -20,8 +24,23 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb1188361545066466</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>FacebookAppID</key>
+	<string>1188361545066466</string>
+	<key>FacebookClientToken</key>
+	<string>1bbbd6b76cddf8940b70b1572625424f</string>
+	<key>FacebookDisplayName</key>
+	<string>Whats Down</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
@@ -35,6 +54,8 @@
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSAllowsArbitraryLoadsInWebContent</key>
 		<true/>
 	</dict>
 	<key>UILaunchStoryboardName</key>
@@ -56,23 +77,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-
-	
-<key>CFBundleURLTypes</key>
-<array>
-  <dict>
-  <key>CFBundleURLSchemes</key>
-  <array>
-    <string>fb1188361545066466</string>
-  </array>
-  </dict>
-</array>
-<key>FacebookAppID</key>
-<string>1188361545066466</string>
-<key>FacebookClientToken</key>
-<string>1bbbd6b76cddf8940b70b1572625424f</string>
-<key>FacebookDisplayName</key>
-<string>Whats Down</string>
-
+	<key>io.flutter.embedded_views_preview</key>
+	<true/>
 </dict>
 </plist>
