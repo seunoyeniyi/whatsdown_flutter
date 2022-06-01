@@ -21,7 +21,7 @@ import 'package:skyewooapp/screens/login/background.dart';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:skyewooapp/site.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-// import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:skyewooapp/ui/validate_phone_dialog.dart';
 
 import '../../../components/already_have_an_account_acheck.dart';
@@ -40,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   UserSession userSession = UserSession();
 
-  bool useEmail = false;
+  bool useEmail = true; //set to false for using phone
   String phoneNumber = "";
 
   @override
@@ -185,103 +185,108 @@ class _LoginScreenState extends State<LoginScreen> {
                           },
                         ),
                         //social login
-                        Visibility(
-                          visible: !useEmail,
-                          child: Column(
-                            children: [
-                              const SizedBox(height: 30),
-                              const Center(
-                                child: Text(
-                                  "OR",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 18,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                              TextButton(
-                                style: AppStyles.flatButtonStyle(
-                                  padding: const EdgeInsets.only(
-                                      top: 13, bottom: 13),
-                                  backgroundColor: AppColors.secondary,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    useEmail = true;
-                                  });
-                                },
-                                child: const Text(
-                                  "Use Username/Email",
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              TextButton.icon(
-                                icon: const Icon(
-                                  Icons.facebook,
+                        Column(
+                          children: [
+                            const SizedBox(height: 30),
+                            const Center(
+                              child: Text(
+                                "OR",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 18,
                                   color: Colors.white,
-                                  size: 18,
-                                ),
-                                style: AppStyles.flatButtonStyle(
-                                  padding: const EdgeInsets.only(
-                                      top: 13, bottom: 13),
-                                  backgroundColor: const Color(0XFF1878F3),
-                                ),
-                                onPressed: _facebookTapped,
-                                label: const Text(
-                                  "Login with Facebook",
-                                  style: TextStyle(fontSize: 16),
                                 ),
                               ),
-                              const SizedBox(height: 10),
-                              TextButton.icon(
-                                icon: SvgPicture.asset(
-                                  "assets/icons/google-plus.svg",
-                                  color: Colors.red,
-                                  height: 18,
-                                  width: 18,
-                                ),
-                                style: AppStyles.flatButtonStyle(
-                                  padding: const EdgeInsets.only(
-                                      top: 13, bottom: 13),
-                                  backgroundColor: AppColors.white,
-                                ),
-                                onPressed: _googleTapped,
-                                label: const Text(
-                                  "Login with Google",
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.black),
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              (() {
-                                if (Platform.isIOS) {
-                                  return TextButton.icon(
-                                    icon: SvgPicture.asset(
-                                      "assets/icons/icons8_apple_logo.svg",
-                                      color: Colors.white,
-                                      height: 18,
-                                      width: 18,
-                                    ),
+                            ),
+                            const SizedBox(height: 10),
+                            Visibility(
+                              visible: !useEmail,
+                              child: Column(
+                                children: [
+                                  const SizedBox(height: 10),
+                                  TextButton(
                                     style: AppStyles.flatButtonStyle(
                                       padding: const EdgeInsets.only(
                                           top: 13, bottom: 13),
-                                      backgroundColor: AppColors.black,
+                                      backgroundColor: AppColors.secondary,
                                     ),
-                                    onPressed: _appleTapped,
-                                    label: const Text(
-                                      "Login with Apple",
+                                    onPressed: () {
+                                      setState(() {
+                                        useEmail = true;
+                                      });
+                                    },
+                                    child: const Text(
+                                      "Use Username/Email",
                                       style: TextStyle(fontSize: 16),
                                     ),
-                                  );
-                                } else {
-                                  return const SizedBox();
-                                }
-                              }()),
-                            ],
-                          ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            TextButton.icon(
+                              icon: const Icon(
+                                Icons.facebook,
+                                color: Colors.white,
+                                size: 18,
+                              ),
+                              style: AppStyles.flatButtonStyle(
+                                padding:
+                                    const EdgeInsets.only(top: 13, bottom: 13),
+                                backgroundColor: const Color(0XFF1878F3),
+                              ),
+                              onPressed: _facebookTapped,
+                              label: const Text(
+                                "Login with Facebook",
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            TextButton.icon(
+                              icon: SvgPicture.asset(
+                                "assets/icons/google-plus.svg",
+                                color: Colors.red,
+                                height: 18,
+                                width: 18,
+                              ),
+                              style: AppStyles.flatButtonStyle(
+                                padding:
+                                    const EdgeInsets.only(top: 13, bottom: 13),
+                                backgroundColor: AppColors.white,
+                              ),
+                              onPressed: _googleTapped,
+                              label: const Text(
+                                "Login with Google",
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.black),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            (() {
+                              if (Platform.isIOS) {
+                                return TextButton.icon(
+                                  icon: SvgPicture.asset(
+                                    "assets/icons/icons8_apple_logo.svg",
+                                    color: Colors.white,
+                                    height: 18,
+                                    width: 18,
+                                  ),
+                                  style: AppStyles.flatButtonStyle(
+                                    padding: const EdgeInsets.only(
+                                        top: 13, bottom: 13),
+                                    backgroundColor: AppColors.black,
+                                  ),
+                                  onPressed: _appleTapped,
+                                  label: const Text(
+                                    "Login with Apple",
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                );
+                              } else {
+                                return const SizedBox();
+                              }
+                            }()),
+                          ],
                         ),
                       ],
                     ),
@@ -418,24 +423,24 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   _facebookTapped() async {
-    // final LoginResult result = await FacebookAuth.instance.login(
-    //   permissions: ['id', 'public_profile', 'email'],
-    // ); // by default we request the email and the public profile
+    final LoginResult result = await FacebookAuth.instance.login(
+      permissions: ['id', 'public_profile', 'email'],
+    ); // by default we request the email and the public profile
 
-    // // or FacebookAuth.i.login()
-    // if (result.status == LoginStatus.success) {
-    //   // you are logged
-    //   // final AccessToken accessToken = result.accessToken!;
-    //   //user data
-    //   final userData = await FacebookAuth.instance.getUserData();
-    //   String facebookID = userData["id"].toString();
-    //   fetchLoginByType(facebookID, "facebook");
-    // } else {
-    //   //couldn't sign in with facebook
-    //   Toaster.show(message: "Couldn't login with Facebook");
-    //   log(result.status.toString());
-    //   log(result.message.toString());
-    // }
+    // or FacebookAuth.i.login()
+    if (result.status == LoginStatus.success) {
+      // you are logged
+      // final AccessToken accessToken = result.accessToken!;
+      //user data
+      final userData = await FacebookAuth.instance.getUserData();
+      String facebookID = userData["id"].toString();
+      fetchLoginByType(facebookID, "facebook");
+    } else {
+      //couldn't sign in with facebook
+      Toaster.show(message: "Couldn't login with Facebook");
+      log(result.status.toString());
+      log(result.message.toString());
+    }
   }
 
   final GoogleSignIn _googleSignIn = GoogleSignIn(

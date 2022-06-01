@@ -49,14 +49,23 @@ class _SplashScreenState extends State<SplashScreen>
 
     await checkSiteSettings();
 
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => MyHomePage(
-          title: Site.NAME,
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MyHomePage(
+            title: Site.NAME,
+          ),
         ),
-      ),
-    );
+        (route) => false);
+
+    // Navigator.pushReplacement(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (context) => MyHomePage(
+    //       title: Site.NAME,
+    //     ),
+    //   ),
+    // );
   }
 
   @override
