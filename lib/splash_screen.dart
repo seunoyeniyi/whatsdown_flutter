@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
+import 'package:skyewooapp/firebase_options.dart';
 import 'package:skyewooapp/handlers/site_info.dart';
 import 'package:skyewooapp/handlers/user_session.dart';
 import 'package:skyewooapp/home.dart';
@@ -35,7 +36,9 @@ class _SplashScreenState extends State<SplashScreen>
     await userSession.init();
     await siteInfo.init();
     //initialize firebase
-    await Firebase.initializeApp();
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
     //register services before app start
     locator.registerLazySingleton(() => PushNotificationService());
 

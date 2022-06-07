@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1072073007321-5udojse9h7s27dl9glfaohr2ii9mnfv7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.whatsdown.in",
+            "certificate_hash": "c281158deae496d562981e8a681d224d36760c38"
+          }
+        },
+        {
           "client_id": "1072073007321-ib1dejdfr4gp2sfctjlots8tjj8r0vm0.apps.googleusercontent.com",
           "client_type": 3
         }
