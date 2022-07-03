@@ -2,22 +2,17 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
-import 'package:skyewooapp/firebase_options.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:skyewooapp/handlers/site_info.dart';
 import 'package:skyewooapp/handlers/user_session.dart';
 import 'package:skyewooapp/home.dart';
-import 'package:skyewooapp/services/push_notificaton.dart';
 import 'package:skyewooapp/site.dart';
-
-GetIt locator = GetIt.instance;
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -28,18 +23,6 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
-  PushNotificationService? _pushNotificationService;
-
-  // local notification
-
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
-
-// initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
-  final AndroidInitializationSettings initializationSettingsAndroid =
-      const AndroidInitializationSettings('app_icon');
-  // end local notification
-
   SiteInfo siteInfo = SiteInfo();
   UserSession userSession = UserSession();
 
@@ -48,80 +31,8 @@ class _SplashScreenState extends State<SplashScreen>
   init() async {
     await userSession.init();
     await siteInfo.init();
-    //initialize firebase
-    await Firebase.initializeApp(
-        // options: DefaultFirebaseOptions.currentPlatform,
-        );
 
-    // local notificatioin
-    final IOSInitializationSettings initializationSettingsIOS =
-        IOSInitializationSettings(
-      requestSoundPermission: false,
-      requestBadgePermission: false,
-      requestAlertPermission: false,
-      onDidReceiveLocalNotification: onDidReceiveLocalNotification,
-    );
-    final InitializationSettings initializationSettings =
-        InitializationSettings(
-            android: initializationSettingsAndroid,
-            iOS: initializationSettingsIOS,
-            macOS: null);
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: selectNotification);
-    //request locoal notification permission for ios
-    final bool? result = await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            IOSFlutterLocalNotificationsPlugin>()
-        ?.requestPermissions(
-          alert: true,
-          badge: true,
-          sound: true,
-        );
-
-    //add notification channel
-    const AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
-      'wooapp',
-      'App Notification',
-      channelDescription: 'Receiving offer notificattions.',
-      importance: Importance.max,
-      priority: Priority.high,
-      ticker: 'ticker',
-    );
-    const IOSNotificationDetails iOSPlatformChannelSpecifics =
-        IOSNotificationDetails(
-      presentAlert:
-          false, // Present an alert when the notification is displayed and the application is in the foreground (only from iOS 10 onwards)
-      presentBadge:
-          false, // Present the badge number when the notification is displayed and the application is in the foreground (only from iOS 10 onwards)
-      presentSound:
-          false, // Play a sound when the notification is displayed and the application is in the foreground (only from iOS 10 onwards)
-      sound: "", // Specifics the file path to play (only from iOS 10 onwards)
-      badgeNumber: 0, // The application's icon badge number
-      // attachments: List<IOSNotificationAttachment>?, (only from iOS 10 onwards)
-      // subtitle: String?, //Secondary description  (only from iOS 10 onwards)
-      threadIdentifier: "wooapp",
-    );
-    const NotificationDetails platformChannelSpecifics = NotificationDetails(
-      android: androidPlatformChannelSpecifics,
-      iOS: iOSPlatformChannelSpecifics,
-    );
-
-    // end local notification
-
-    //register services before app start
-    locator.registerLazySingleton(() => PushNotificationService(
-          flutterLocalNotificationsPlugin: flutterLocalNotificationsPlugin,
-          platformChannelSpecifics: platformChannelSpecifics,
-        ));
-
-    //add Push Notifications to GetIT
-    _pushNotificationService = locator<PushNotificationService>();
-
-    // Register for push notifications
-    if (_pushNotificationService != null) {
-      await _pushNotificationService?.initialize();
-    }
+    updateOneSignal(); //asynchronously
 
     await checkSiteSettings();
 
@@ -191,6 +102,10 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   Future<void> checkSiteSettings() async {
+    var connectivity = await Connectivity().checkConnectivity();
+    if (connectivity == ConnectivityResult.none) {
+      return;
+    }
     try {
       //fetch
       String url = Site.INFO + "?token_key=" + Site.TOKEN_KEY;
@@ -223,43 +138,40 @@ class _SplashScreenState extends State<SplashScreen>
     } finally {}
   }
 
-// local notification functions
-  void selectNotification(String? payload) async {
-    // if (payload != null) {
-    //   debugPrint('notification payload: $payload');
-    // }
-    await Navigator.push(
-      context,
-      MaterialPageRoute<void>(
-        builder: (context) => MyHomePage(title: Site.NAME),
-      ),
-    );
-  }
+  Future<void> updateOneSignal() async {
+    var connectivity = await Connectivity().checkConnectivity();
+    if (connectivity == ConnectivityResult.none) {
+      return;
+    }
 
-  void onDidReceiveLocalNotification(
-      int id, String? title, String? body, String? payload) async {
-    // display a dialog with the notification details, tap ok to go to another page
-    showDialog(
-      context: context,
-      builder: (BuildContext context) => CupertinoAlertDialog(
-        title: Text(title!),
-        content: Text(body!),
-        actions: [
-          CupertinoDialogAction(
-            isDefaultAction: true,
-            child: const Text('Ok'),
-            onPressed: () async {
-              Navigator.of(context, rootNavigator: true).pop();
-              await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MyHomePage(title: Site.NAME),
-                ),
-              );
-            },
-          )
-        ],
-      ),
-    );
+    final status = await OneSignal.shared.getDeviceState();
+    final String? userID = status?.userId;
+    // final String? token = status?.pushToken; //can't use because we have to seperate android and ios token in rest api
+
+    if (userID != null) {
+      //save to server
+      try {
+        UserSession userSession = UserSession();
+        await userSession.init();
+        //fetch
+        String url =
+            Site.ADD_DEVICE + userSession.ID + "?token_key=" + Site.TOKEN_KEY;
+
+        dynamic data = {
+          "device": userID,
+        };
+
+        Response response = await post(url, body: data);
+
+        if (response.statusCode == 200 && response.body.isNotEmpty) {
+          //nothing
+          // log(response.body);
+        } else {
+          //nothing
+        }
+      } finally {
+        //nothing
+      }
+    }
   }
 }
