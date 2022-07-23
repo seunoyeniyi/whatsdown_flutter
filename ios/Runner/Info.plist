@@ -2,10 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>FacebookAdvertiserIDCollectionEnabled</key>
-	<string>TRUE</string>
-	<key>FacebookAutoLogAppEventsEnabled</key>
-	<string>TRUE</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -35,8 +31,12 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>FacebookAdvertiserIDCollectionEnabled</key>
+	<string>TRUE</string>
 	<key>FacebookAppID</key>
 	<string>1188361545066466</string>
+	<key>FacebookAutoLogAppEventsEnabled</key>
+	<string>TRUE</string>
 	<key>FacebookClientToken</key>
 	<string>1bbbd6b76cddf8940b70b1572625424f</string>
 	<key>FacebookDisplayName</key>
@@ -53,20 +53,20 @@
 	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
-		<key>NSExceptionDomains</key>
-		<dict>
-			<key>whatsdown.in</key>
-			<dict>
-				<key>NSThirdPartyExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-			</dict>
-		</dict>
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 		<key>NSAllowsArbitraryLoadsInWebContent</key>
 		<true/>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>whatsdown.in</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSThirdPartyExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
+		</dict>
 	</dict>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

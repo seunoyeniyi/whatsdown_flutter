@@ -113,15 +113,15 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   );
 
   //since android is receiving message already
-  if (Platform.isIOS) {
-    await flutterLocalNotificationsPlugin.show(
-      0,
-      message.notification!.title!,
-      message.notification!.body!,
-      platformChannelSpecifics,
-      payload: 'item-x',
-    );
-  }
+  // if (Platform.isIOS) {
+  await flutterLocalNotificationsPlugin.show(
+    0,
+    message.notification!.title!,
+    message.notification!.body!,
+    platformChannelSpecifics,
+    payload: 'item-x',
+  );
+  // }
 }
 
 class PushNotificationService {
