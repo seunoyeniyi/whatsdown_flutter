@@ -5,10 +5,10 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:skyewooapp/handlers/site_info.dart';
 import 'package:skyewooapp/handlers/user_session.dart';
 import 'package:skyewooapp/home.dart';
@@ -23,6 +23,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
   SiteInfo siteInfo = SiteInfo();
   UserSession userSession = UserSession();
 
@@ -32,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen>
     await userSession.init();
     await siteInfo.init();
 
-    updateOneSignal(); //asynchronously
+    await updateDeviceToken();
 
     await checkSiteSettings();
 
@@ -138,17 +139,18 @@ class _SplashScreenState extends State<SplashScreen>
     } finally {}
   }
 
-  Future<void> updateOneSignal() async {
+  Future<void> updateDeviceToken() async {
     var connectivity = await Connectivity().checkConnectivity();
     if (connectivity == ConnectivityResult.none) {
       return;
     }
 
-    final status = await OneSignal.shared.getDeviceState();
-    final String? userID = status?.userId;
+    String? token = await messaging.getToken();
+
     // final String? token = status?.pushToken; //can't use because we have to seperate android and ios token in rest api
 
-    if (userID != null) {
+    if (token != null) {
+      // log(token);
       //save to server
       try {
         UserSession userSession = UserSession();
@@ -158,7 +160,7 @@ class _SplashScreenState extends State<SplashScreen>
             Site.ADD_DEVICE + userSession.ID + "?token_key=" + Site.TOKEN_KEY;
 
         dynamic data = {
-          "device": userID,
+          "device": token,
         };
 
         Response response = await post(url, body: data);
