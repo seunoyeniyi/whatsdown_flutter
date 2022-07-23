@@ -50,8 +50,8 @@ class _SplashScreenState extends State<SplashScreen>
     await siteInfo.init();
     //initialize firebase
     await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+        // options: DefaultFirebaseOptions.currentPlatform,
+        );
 
     // local notificatioin
     final IOSInitializationSettings initializationSettingsIOS =
