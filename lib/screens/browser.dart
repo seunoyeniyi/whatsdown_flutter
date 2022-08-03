@@ -40,7 +40,7 @@ class _AppBrowserState extends State<AppBrowser> {
           title: Text(widget.title),
         ),
         body: WebView(
-          initialUrl: widget.url,
+          initialUrl: Uri.encodeFull(widget.url),
           javascriptMode: JavascriptMode.unrestricted,
           gestureNavigationEnabled: true,
           debuggingEnabled: true,

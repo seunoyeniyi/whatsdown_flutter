@@ -46,7 +46,7 @@ class _PaymentBrowserState extends State<PaymentBrowser> {
         body: WebView(
           backgroundColor: Colors.white,
 
-          initialUrl: widget.url,
+          initialUrl: Uri.encodeFull(widget.url),
           javascriptMode: JavascriptMode.unrestricted,
           gestureNavigationEnabled: true,
           debuggingEnabled: true,
